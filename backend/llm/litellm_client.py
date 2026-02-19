@@ -3,11 +3,16 @@ LiteLLM client wrapper providing ChatAnthropic-compatible interface.
 
 This module provides a clean async wrapper around LiteLLM that mimics
 the LangChain ChatAnthropic interface for easy drop-in replacement.
+
+Supports both direct provider calls and LiteLLM proxy usage:
+- Direct: Set ANTHROPIC_API_KEY (or provider-specific key)
+- Proxy: Set LITELLM_API_KEY and LITELLM_API_BASE
 """
 
 from typing import List, Optional, Any
 from litellm import acompletion
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -78,9 +83,11 @@ class LiteLLMClient:
 
     def __init__(
         self,
-        model: str = "anthropic/claude-4-5-sonnet",
+        model: str = "claude-4-5-sonnet",
         temperature: float = 0.7,
         max_tokens: int = 4096,
+        api_key: Optional[str] = None,
+        api_base: Optional[str] = None,
         **kwargs
     ):
         self.model = model
@@ -88,9 +95,14 @@ class LiteLLMClient:
         self.max_tokens = max_tokens
         self.extra_params = kwargs
 
+        # Support LiteLLM proxy or direct provider calls
+        self.api_key = api_key or os.getenv("LITELLM_API_KEY")
+        self.api_base = api_base or os.getenv("LITELLM_API_BASE")
+
         logger.info(
             f"Initialized LiteLLMClient with model={model}, "
-            f"temperature={temperature}, max_tokens={max_tokens}"
+            f"temperature={temperature}, max_tokens={max_tokens}, "
+            f"api_base={self.api_base or 'default'}"
         )
 
     def _convert_messages(self, messages: List[Message]) -> List[dict]:
@@ -133,14 +145,25 @@ class LiteLLMClient:
                 f"message_count={len(messages)}"
             )
 
-            # Call LiteLLM's async completion
-            response = await acompletion(
-                model=self.model,
-                messages=litellm_messages,
-                temperature=self.temperature,
-                max_tokens=self.max_tokens,
+            # Prepare completion arguments
+            completion_kwargs = {
+                "model": self.model,
+                "messages": litellm_messages,
+                "temperature": self.temperature,
+                "max_tokens": self.max_tokens,
                 **self.extra_params
-            )
+            }
+
+            # Add API key and base if configured (for LiteLLM proxy)
+            if self.api_key:
+                completion_kwargs["api_key"] = self.api_key
+            if self.api_base:
+                # LiteLLM proxy acts as OpenAI-compatible endpoint
+                completion_kwargs["api_base"] = self.api_base
+                completion_kwargs["custom_llm_provider"] = "openai"
+
+            # Call LiteLLM's async completion
+            response = await acompletion(**completion_kwargs)
 
             # Extract content from response
             content = response.choices[0].message.content
