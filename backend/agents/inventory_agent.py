@@ -5,7 +5,7 @@ Registered as a first-class identity in Okta.
 """
 
 from typing import Dict, Any, Optional
-from langchain_anthropic import ChatAnthropic
+from llm.litellm_client import LiteLLMClient
 
 
 class InventoryAgent:
@@ -30,8 +30,8 @@ class InventoryAgent:
         self.agent_name = "inventory-agent"
         self.scopes = ["inventory:read", "inventory:write"]
 
-        self.llm = ChatAnthropic(
-            model="claude-sonnet-4-20250514",
+        self.llm = LiteLLMClient(
+            model="anthropic/claude-4-5-sonnet",
             temperature=0.3,  # Lower temp for factual inventory data
         )
 

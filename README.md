@@ -94,7 +94,7 @@ This demo implements **Scenario 2** from our [four scenarios framework](docs/okt
 - **Location**: `backend/`
 - **Orchestrator**: LangGraph workflow for multi-agent coordination
 - **Auth**: Okta AI SDK for ID-JAG token exchange
-- **LLM**: Anthropic Claude for routing and response generation
+- **LLM**: LiteLLM with Anthropic Claude for routing and response generation
 
 ### 3. MCP Servers (4 Protected APIs)
 Each MCP server has its own Okta Authorization Server:
@@ -158,7 +158,7 @@ Want to deploy this demo with your own Okta org? Follow the **[Implementation Gu
 |-----------|------------|
 | Frontend | Next.js 14, React 18, Tailwind CSS, NextAuth.js |
 | Backend | FastAPI, LangGraph, LangChain, Python 3.9+ |
-| LLM | Anthropic Claude (claude-sonnet-4-20250514) |
+| LLM | LiteLLM with Anthropic Claude (claude-4-5-sonnet) |
 | Auth | Okta OIDC, Cross App Access (XAA), ID-JAG Token Exchange |
 | Deployment | Vercel (frontend), Render (backend) |
 
@@ -192,6 +192,8 @@ courtedge-ai-demo/
 │   │   ├── agent_config.py      # Agent configuration
 │   │   ├── multi_agent_auth.py  # ID-JAG token exchange
 │   │   └── okta_auth.py         # Okta authentication
+│   ├── llm/
+│   │   └── litellm_client.py    # LiteLLM wrapper for Claude
 │   └── orchestrator/
 │       └── orchestrator.py      # LangGraph workflow
 ├── packages/

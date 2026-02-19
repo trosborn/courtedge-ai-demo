@@ -12,8 +12,7 @@ Security Model:
 """
 
 from typing import Dict, Any, Optional, List
-from langchain_anthropic import ChatAnthropic
-from langchain_core.messages import HumanMessage, SystemMessage
+from llm.litellm_client import LiteLLMClient, HumanMessage, SystemMessage
 import logging
 
 from ..auth.okta_auth import OktaAuth, get_okta_auth, MCP_SCOPES
@@ -63,8 +62,8 @@ class SalesAgent:
         self._token_info: Optional[Dict] = None
 
         # Initialize LLM (Claude)
-        self.llm = ChatAnthropic(
-            model="claude-sonnet-4-20250514",
+        self.llm = LiteLLMClient(
+            model="anthropic/claude-4-5-sonnet",
             temperature=0.7,
         )
 
