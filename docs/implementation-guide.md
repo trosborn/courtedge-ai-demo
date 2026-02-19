@@ -928,7 +928,13 @@ In Render, go to **Environment** and add these variables:
 
 | Variable | Value |
 |----------|-------|
-| `ANTHROPIC_API_KEY` | Your Anthropic API key |
+| **LLM Configuration (Choose Option 1 OR Option 2)** | |
+| **Option 1: LiteLLM Proxy (Recommended)** | |
+| `LITELLM_API_KEY` | Your LiteLLM proxy API key |
+| `LITELLM_API_BASE` | Your LiteLLM proxy URL (e.g., `https://llm.atko.ai`) |
+| **Option 2: Direct Anthropic** | |
+| `ANTHROPIC_API_KEY` | Your Anthropic API key (if not using proxy) |
+| **Okta Configuration** | |
 | `OKTA_DOMAIN` | `https://your-org.okta.com` |
 | `OKTA_CLIENT_ID` | Your OIDC client ID |
 | `OKTA_AI_AGENT_ID` | Your AI Agent ID (`wlp...`) |
@@ -1006,7 +1012,11 @@ Expected response:
 
 | Variable | Platform | Required | Description |
 |----------|----------|----------|-------------|
-| `ANTHROPIC_API_KEY` | Render | Yes | Anthropic Claude API key |
+| **LLM Configuration** | | | |
+| `LITELLM_API_KEY` | Render | Conditional | LiteLLM proxy API key (use this OR ANTHROPIC_API_KEY) |
+| `LITELLM_API_BASE` | Render | Conditional | LiteLLM proxy URL (required if using LITELLM_API_KEY) |
+| `ANTHROPIC_API_KEY` | Render | Conditional | Anthropic Claude API key (use if not using LiteLLM proxy) |
+| **Okta Configuration** | | | |
 | `OKTA_DOMAIN` | Both | Yes | Your Okta org URL |
 | `OKTA_CLIENT_ID` | Both | Yes | OIDC application client ID |
 | `OKTA_CLIENT_SECRET` | Vercel | Yes | OIDC application client secret |
@@ -1271,7 +1281,9 @@ If you're cloning this repository to deploy your own instance, here's everything
 - [ ] `OKTA_CLIENT_*` - Your Okta credentials
 
 ### 3. Render Environment Variables
-- [ ] `ANTHROPIC_API_KEY` - Your key
+- [ ] **LLM Config** - Choose one:
+  - [ ] `LITELLM_API_KEY` + `LITELLM_API_BASE` (recommended for proxy)
+  - [ ] `ANTHROPIC_API_KEY` (direct Anthropic)
 - [ ] All `OKTA_*` variables - Your Okta values
 - [ ] `CORS_ORIGINS` - Your Vercel URL
 
