@@ -31,7 +31,7 @@ class CustomerAgent:
         self.scopes = ["customer:read", "customer:write"]
 
         self.llm = LiteLLMClient(
-            model="anthropic/claude-4-5-sonnet",
+            model="claude-4-5-sonnet",
             temperature=0.5,
         )
 

@@ -31,7 +31,7 @@ class InventoryAgent:
         self.scopes = ["inventory:read", "inventory:write"]
 
         self.llm = LiteLLMClient(
-            model="anthropic/claude-4-5-sonnet",
+            model="claude-4-5-sonnet",
             temperature=0.3,  # Lower temp for factual inventory data
         )
 

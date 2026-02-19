@@ -31,7 +31,7 @@ class PricingAgent:
         self.scopes = ["pricing:read", "pricing:write"]
 
         self.llm = LiteLLMClient(
-            model="anthropic/claude-4-5-sonnet",
+            model="claude-4-5-sonnet",
             temperature=0.2,  # Low temp for pricing accuracy
         )
 

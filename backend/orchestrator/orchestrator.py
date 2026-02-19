@@ -156,13 +156,13 @@ class Orchestrator:
 
         # Initialize router LLM (fast model for routing decisions)
         self.router_llm = LiteLLMClient(
-            model="anthropic/claude-4-5-sonnet",
+            model="claude-4-5-sonnet",
             temperature=0,
         )
 
         # Initialize response LLM (for combining results)
         self.response_llm = LiteLLMClient(
-            model="anthropic/claude-4-5-sonnet",
+            model="claude-4-5-sonnet",
             temperature=0.7,
         )
 
